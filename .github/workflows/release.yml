@@ -1,0 +1,70 @@
+name: CelSuite Cellium Multi-Platform Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: 'Release Tag (e.g. v2610.09.0)'
+        required: true
+        default: 'v2610.09.0'
+
+permissions:
+  contents: write
+
+jobs:
+  publish-release:
+    name: Publish GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.tag_name != '' && github.event.inputs.tag_name || github.ref_name }}
+          name: CelSuite - Cellium ${{ github.event.inputs.tag_name != '' && github.event.inputs.tag_name || github.ref_name }}
+          make_latest: true
+          body: |
+            <div align="center">
+            <img src="https://raw.githubusercontent.com/HenryCarm/CelSuite_Cellium/main/banner.webp" alt="CelSuite Cellium Banner" width="100%" style="border-radius: 12px; max-width: 850px;" />
+
+            # CelSuite — Cellium ${{ github.event.inputs.tag_name != '' && github.event.inputs.tag_name || github.ref_name }}
+
+            *Offline Local LLM Studio, Desktop Voice Companion & Multi-Model Orchestrator with 1,520 Procedural Dot-Matrix Expressions.*
+
+            </div>
+
+            ---
+
+            ### 📦 Downloads & Platform Binaries
+
+            | Platform | Edition | Format | Description |
+            | :--- | :--- | :--- | :--- |
+            | 📱 **Android** | Native Kotlin Client | `.apk` | Universal mobile client with 1,520 avatar studio & Live calls |
+            | 🪟 **Windows** | Standalone Folder | `.7z` | Ultra LZMA2 compressed package for Windows 10/11 |
+            | 🪟 **Windows** | Portable Single-File | `.exe` | Portable Onefile instant executable |
+            | 🐧 **Linux** | Standalone Folder | `.7z` | Ultra LZMA2 compressed folder with Qt & ONNX libraries |
+            | 🐧 **Linux** | Portable Single-File | `.bin` | Single executable (`chmod +x` and launch) |
+
+            ---
+
+            ### ✨ What's New in This Release:
+            - 🏷️ **Official CelSuite Ecosystem Release:** Full rebrand to `HenryJayZ.CelSuite.Cellium`.
+            - 🌀 **1,520 Dot-Matrix Expressions:** 760 Female + 760 Male animations with real-time synchronized blinking and 10 modifier styles.
+            - 🧠 **Deep Reasoning Engine:** Collapsible `<think>` token accordion cards.
+            - 📞 **CelAS Live Voice Companion:** Fullscreen voice calls with real-time mic-energy metering.
+            - 🌐 **11 Cloud & Local AI Engines:** Google Gemini, Groq, DeepSeek, Cerebras, OpenRouter, SambaNova, Mistral, Together AI, Fireworks AI, SiliconFlow, plus local GGUF offline mode.
+            - 🖤 **Glassmorphism Transparency Fix:** 100% transparent chat viewport eliminating black boxes.
+
+            ---
+            *Built automatically with ❤️ by GitHub Actions Cloud CI/CD.*
+          files: |
+            dist/*.apk
+            dist/*.7z
+            dist/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,24 @@
+# Closed-Source Standard
+*.py
+cellium/
+_legacy/
+tools/
+build_nuitka.py
+RunCelliumApp.sh
+*.sh
+*.txt
+*.png
+*.log
+*.json
+*.md
+!README.md
+!CHANGELOG.md
+!LICENSE
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.spec
+output/
+dist/*.bin
+dist/*.exe
